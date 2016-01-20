@@ -1,0 +1,42 @@
+create table S?_literatura (
+lit_id number primary key,
+author varchar2(50),name varchar2(50),count number);
+
+
+create sequence s?_literatura_seq start with 1 increment by 1;
+
+insert into S?_literatura (lit_id,author, name,count) values (s?_literatura_seq.NEXTVAL, 'Dostoevski', 'Podrostok', 10);
+insert into S?_literatura (lit_id,author, name,count) values (s?_literatura_seq.NEXTVAL, 'Demidovich', 'Matan', 5);
+insert into S?_literatura (lit_id,author, name,count) values (s?_literatura_seq.NEXTVAL, 'Gamsun', 'Golod', 1);
+insert into S?_literatura (lit_id,author, name,count) values (s?_literatura_seq.NEXTVAL, 'Kafka', 'Zamok', 5);
+
+create table s?_sotrudniki (
+sot_id number primary key,
+dolgnost varchar2(50) not null,
+surname varchar2(50) not null,
+name varchar2(50) not null);
+
+create sequence s?_sotrudniki_seq start with 1 increment by 1;
+
+insert into s?_sotrudniki (sot_id,dolgnost, surname, name) values (s?_sotrudniki_seq.NEXTVAL, 'otvetstv bibliotekar', 'Korobeinikov', 'Ivan');
+insert into s?_sotrudniki (sot_id,dolgnost, surname, name) values (s?_sotrudniki_seq.NEXTVAL, 'otvetstv bibliotekar', 'Gradov', 'Slava');
+insert into s?_sotrudniki (sot_id,dolgnost, surname, name) values (s?_sotrudniki_seq.NEXTVAL, 'otvetstv bibliotekar', 'Rusyev', 'Alex');
+insert into s?_sotrudniki (sot_id,dolgnost, surname, name) values (s?_sotrudniki_seq.NEXTVAL, 'otvetstv bibliotekar', 'Korovin', 'Ivan');
+
+create table s?_RR (
+R_id number primary key,
+S_id number not null,
+T_id number not null,
+napr varchar2(50),
+cost number,
+foreign key (S_id) references S?_sotrudniki(sot_id),
+foreign key (T_id) references s?_literatura(lit_id));
+
+create sequence s?_RR_seq start with 1 increment by 1;
+
+insert into s?_RR (R_id,S_id,T_id,napr,cost) values (s?_RR_seq.NEXTVAL, 1,1,'Classic',100);
+insert into s?_RR (R_id,S_id,T_id,napr,cost) values (s?_RR_seq.NEXTVAL, 2,2,'Sience',100);
+insert into s?_RR (R_id,S_id,T_id,napr,cost) values (s?_RR_seq.NEXTVAL, 3,3,'Classic',100);
+insert into s?_RR (R_id,S_id,T_id,napr,cost) values (s?_RR_seq.NEXTVAL, 4,4,'Classic',100);
+
+create view s?_xx as (select s.surname SURNAME, s.name NAME, b.author AUTHOR, b.name, NAME) from ((s?_RR join s?_sotrudniki on S_id=sot_id)join S?_literatura on T_id=lit_id where mod(to_number(to_char(sysdate, 'SS')), 2) = 0);
