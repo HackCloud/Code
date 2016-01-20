@@ -1,0 +1,48 @@
+create table s22410045002_country 
+(id_country number primary key,
+country varchar2(50) not null, 
+capital varchar2(50) not null);
+
+
+create sequence s22410045002_country_sequence1 start with 1 increment by 1;
+
+insert into s22410045002_country (id_country, country, capital) values (s22410045002_country_sequence1.NEXTVAL, 'Russia', 'Moscow');
+insert into s22410045002_country (id_country, country, capital) values (s22410045002_country_sequence1.NEXTVAL, 'USA', 'Washington');
+
+
+
+create table s22410045002_team 
+(id_team number primary key,
+id_country number not null,
+FOREIGN KEY (id_country) references s22410045002_country (id_country),
+team varchar2(50) not null,
+area varchar2(50) not null);
+
+create sequence s22410045002_team_sequence2 start with 1 increment by 1;
+
+insert into s22410045002_team (id_team, id_country, team, area) values (s22410045002_team_sequence2.NEXTVAL, 1, 'Golden State Warriors', 'Korobeinikov');
+insert into s22410045002_team (id_team, id_country, team, area) values (s22410045002_team_sequence2.NEXTVAL, 2, 'Houston Rockets', 'American Airlines Arena');
+insert into s22410045002_team (id_team, id_country, team, area) values (s22410045002_team_sequence2.NEXTVAL, 1, 'Los Angeles Lakers', 'American Airlines Arena');
+
+
+
+
+create table s22410045002_player
+(id_player number primary key,
+id_team number not null, 
+FOREIGN KEY (id_player) references s22410045002_team (id_team),
+first_name varchar2(50) not null,
+last_name varchar2(50) not null,
+patronymic_name varchar2(50) not null);
+
+create sequence s22410045002_sequence3 start with 1 increment by 1;
+
+insert into s22410045002_player (id_player, id_team, first_name, last_name, patronymic_name) values (s22410045002_sequence3.NEXTVAL, 1,'Pavlov','Dmitriy','Maksimovich');
+insert into s22410045002_player (id_player, id_team, first_name, last_name, patronymic_name) values (s22410045002_sequence3.NEXTVAL, 1,'Novikov','Igor','Denisovich');
+insert into s22410045002_player (id_player, id_team, first_name, last_name, patronymic_name) values (s22410045002_sequence3.NEXTVAL, 2,'Ibragimovich','Zlatan','Kozlov');
+commit;
+
+create view s22410045002_player_view
+as select *
+from s22410045002_player
+where mod(to_number(to_char(sysdate, 'ss')),2)=0
